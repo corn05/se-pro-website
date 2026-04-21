@@ -101,7 +101,17 @@ export default function PharmacyDashboardPage() {
     }
   };
 
-  const OrderCard = ({ order }: { order: any }) => (
+  const OrderCard = ({ order }: { order: any }) => {
+    let medicationsList = [];
+    try {
+      medicationsList = typeof order.medications === 'string' 
+        ? JSON.parse(order.medications) 
+        : (order.medications || []);
+    } catch (e) {
+      console.error('Failed to parse medications', e);
+    }
+
+    return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-4">
@@ -130,7 +140,7 @@ export default function PharmacyDashboardPage() {
         </div>
 
         <div className="mt-4 space-y-2">
-          {order.medications?.map((med: any, idx: number) => (
+          {medicationsList.map((med: any, idx: number) => (
             <div
               key={idx}
               className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
@@ -165,7 +175,8 @@ export default function PharmacyDashboardPage() {
         )}
       </CardContent>
     </Card>
-  );
+    );
+  };
 
   if (!user) return null;
   if (loading) return <div className="p-8 text-center text-muted-foreground">Loading pharmacy dashboard...</div>;
