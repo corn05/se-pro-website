@@ -1,0 +1,246 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  name              String
+  role              String   // 'patient' | 'doctor' | 'admin' | 'pharmacy' | 'lab'
+  avatar            String?
+  phone             String?
+  dateOfBirth       String?
+  gender            String?
+  address           String?
+  
+  // Patient specific
+  bloodType         String?
+  allergies         String?  // JSON stringified array
+  emergencyContact  String?
+  insuranceProvider String?
+  insuranceNumber   String?
+  
+  // Doctor specific
+  specialization    String?
+  licenseNumber     String?
+  department        String?
+  experience        Int?
+  consultationFee   Float?
+  
+  // Pharmacy specific
+  pharmacyName      String?
+  pharmacyLicense   String?
+  
+  // Lab specific
+  labName           String?
+  labLicense        String?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  patientAppointments Appointment[] @relation("PatientAppointments")
+  doctorAppointments  Appointment[] @relation("DoctorAppointments")
+}
+
+model Appointment {
+  id                   String   @id @default(cuid())
+  patientId            String
+  patientName          String
+  doctorId             String
+  doctorName           String
+  doctorSpecialization String
+  doctorDepartment     String?
+  doctorAddress        String?
+  doctorPhone          String?
+  date                 String
+  time                 String
+  status               String   // 'scheduled' | 'completed' | 'cancelled' | 'in-progress'
+  type                 String   // 'consultation' | 'follow-up' | 'emergency' | 'routine'
+  notes                String?
+  symptoms             String?  // JSON stringified array
+  diagnosis            String?
+  fee                  Float
+  paymentStatus        String   // 'pending' | 'paid' | 'refunded'
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  patient              User     @relation("PatientAppointments", fields: [patientId], references: [id])
+  doctor               User     @relation("DoctorAppointments", fields: [doctorId], references: [id])
+}
+
+model Prescription {
+  id            String   @id @default(cuid())
+  patientId     String
+  patientName   String
+  doctorId      String
+  doctorName    String
+  appointmentId String?
+  date          String
+  diagnosis     String
+  instructions  String
+  warnings      String?  // JSON stringified array
+  status        String   // 'active' | 'completed' | 'cancelled'
+  aiGenerated   Boolean  @default(false)
+  validUntil    String
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  medications   Medication[]
+}
+
+model Medication {
+  id             String       @id @default(cuid())
+  name           String
+  dosage         String
+  frequency      String
+  duration       String
+  instructions   String?
+  quantity       Int?
+  
+  prescriptionId String
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+}
+
+model LabTest {
+  id            String   @id @default(cuid())
+  patientId     String
+  patientName   String
+  doctorId      String
+  doctorName    String
+  testName      String
+  testType      String
+  date          String
+  status        String   // 'pending' | 'in-progress' | 'completed' | 'cancelled'
+  reportUrl     String?
+  fee           Float
+  paymentStatus String   // 'pending' | 'paid'
+  priority      String   // 'normal' | 'urgent'
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  results       LabResult[]
+}
+
+model LabResult {
+  id             String   @id @default(cuid())
+  parameter      String
+  value          String
+  unit           String
+  referenceRange String
+  status         String   // 'normal' | 'high' | 'low' | 'critical'
+
+  labTestId      String
+  labTest        LabTest  @relation(fields: [labTestId], references: [id], onDelete: Cascade)
+}
+
+model MedicalRecord {
+  id            String   @id @default(cuid())
+  patientId     String
+  date          String
+  type          String   // 'consultation' | 'lab-result' | 'prescription' | 'imaging' | 'vaccination'
+  title         String
+  description   String
+  doctorName    String?
+  attachments   String?  // JSON array
+  data          String?  // JSON string
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model InventoryItem {
+  id            String   @id @default(cuid())
+  name          String
+  category      String   // 'medication' | 'equipment' | 'supplies'
+  sku           String   @unique
+  quantity      Int
+  minStock      Int
+  maxStock      Int
+  price         Float
+  supplier      String
+  expiryDate    String?
+  batchNumber   String?
+  status        String   // 'in-stock' | 'low-stock' | 'out-of-stock' | 'expired'
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model PharmacyOrder {
+  id             String   @id @default(cuid())
+  prescriptionId String
+  patientId      String
+  patientName    String
+  status         String   // 'pending' | 'processing' | 'ready' | 'dispensed' | 'cancelled'
+  date           String
+  totalAmount    Float
+  paymentStatus  String   // 'pending' | 'paid'
+  medications    String   // JSON string of medications
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Department {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  description   String
+  head          String
+  staffCount    Int
+  location      String
+  status        String   // 'active' | 'inactive'
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Bill {
+  id            String   @id @default(cuid())
+  patientId     String
+  patientName   String
+  date          String
+  dueDate       String
+  totalAmount   Float
+  paidAmount    Float
+  status        String   // 'pending' | 'partial' | 'paid' | 'overdue'
+  paymentMethod String?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  items         BillItem[]
+}
+
+model BillItem {
+  id            String   @id @default(cuid())
+  description   String
+  quantity      Int
+  unitPrice     Float
+  total         Float
+  category      String   // 'consultation' | 'medication' | 'lab-test' | 'procedure' | 'other'
+
+  billId        String
+  bill          Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id            String   @id @default(cuid())
+  userId        String
+  title         String
+  message       String
+  type          String   // 'info' | 'warning' | 'success' | 'error'
+  read          Boolean  @default(false)
+  date          String
+  link          String?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

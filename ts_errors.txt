@@ -1,0 +1,37 @@
+app/(dashboard)/admin/users/page.tsx(66,21): error TS2352: Conversion of type '{ department: string | null; id: string; name: string; createdAt: Date; updatedAt: Date; role: string; email: string; avatar: string | null; phone: string | null; dateOfBirth: string | null; ... 14 more ...; labLicense: string | null; }[]' to type 'User[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ department: string | null; id: string; name: string; createdAt: Date; updatedAt: Date; role: string; email: string; avatar: string | null; phone: string | null; dateOfBirth: string | null; ... 14 more ...; labLicense: string | null; }' is not comparable to type 'User'.
+    Types of property 'allergies' are incompatible.
+      Type 'string | null' is not comparable to type 'string[] | undefined'.
+        Type 'string' is not comparable to type 'string[]'.
+app/(dashboard)/doctor/ai-prescriber/page.tsx(22,3): error TS2300: Duplicate identifier 'User'.
+app/(dashboard)/doctor/ai-prescriber/page.tsx(37,27): error TS2300: Duplicate identifier 'User'.
+app/(dashboard)/doctor/ai-prescriber/page.tsx(61,44): error TS2749: 'User' refers to a value, but is being used as a type here. Did you mean 'typeof User'?
+app/(dashboard)/doctor/appointments/page.tsx(47,27): error TS2352: Conversion of type '{ id: string; status: string; createdAt: Date; updatedAt: Date; patientId: string; patientName: string; date: string; doctorId: string; doctorName: string; doctorSpecialization: string; ... 9 more ...; paymentStatus: string; }[]' to type 'Appointment[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ id: string; status: string; createdAt: Date; updatedAt: Date; patientId: string; patientName: string; date: string; doctorId: string; doctorName: string; doctorSpecialization: string; ... 9 more ...; paymentStatus: string; }' is not comparable to type 'Appointment'.
+    Types of property 'symptoms' are incompatible.
+      Type 'string | null' is not comparable to type 'string[] | undefined'.
+        Type 'string' is not comparable to type 'string[]'.
+app/(dashboard)/doctor/appointments/page.tsx(121,28): error TS2339: Property 'isVirtual' does not exist on type 'Appointment'.
+app/(dashboard)/doctor/consultations/page.tsx(55,52): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/doctor/page.tsx(39,33): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/doctor/page.tsx(41,34): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/doctor/patients/page.tsx(36,15): error TS2305: Module '"@/types"' has no exported member 'Patient'.
+app/(dashboard)/doctor/prescriptions/page.tsx(45,50): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/appointments/page.tsx(75,34): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/lab-results/page.tsx(60,46): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/medical-records/page.tsx(52,52): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/page.tsx(41,34): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/page.tsx(42,35): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/page.tsx(43,30): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/page.tsx(44,32): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/page.tsx(45,36): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/payments/page.tsx(51,43): error TS18047: 'user' is possibly 'null'.
+app/(dashboard)/patient/prescriptions/page.tsx(51,51): error TS18047: 'user' is possibly 'null'.
+lib/auth-context.tsx(40,15): error TS2352: Conversion of type '{ department: string | null; id: string; name: string; createdAt: Date; updatedAt: Date; role: string; email: string; avatar: string | null; phone: string | null; dateOfBirth: string | null; ... 14 more ...; labLicense: string | null; }' to type 'User' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Types of property 'allergies' are incompatible.
+    Type 'string | null' is not comparable to type 'string[] | undefined'.
+      Type 'string' is not comparable to type 'string[]'.
+lib/auth-context.tsx(52,15): error TS2352: Conversion of type '{ department: string | null; id: string; name: string; createdAt: Date; updatedAt: Date; role: string; email: string; avatar: string | null; phone: string | null; dateOfBirth: string | null; ... 14 more ...; labLicense: string | null; }' to type 'User' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Types of property 'allergies' are incompatible.
+    Type 'string | null' is not comparable to type 'string[] | undefined'.
+      Type 'string' is not comparable to type 'string[]'.
