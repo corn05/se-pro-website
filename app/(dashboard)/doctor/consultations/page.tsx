@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { getAppointmentsByDoctor } from '@/app/actions/appointments';
 import { useAuth } from '@/lib/auth-context';
+import { safeParseArray } from '@/lib/utils';
 import { useEffect } from 'react';
 
 interface Consultation {
@@ -164,7 +165,7 @@ export default function ConsultationsPage() {
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1">
-                      {consultation.symptoms && JSON.parse(consultation.symptoms).map((symptom: string) => (
+                      {safeParseArray(consultation.symptoms).map((symptom: string) => (
                         <Badge key={symptom} variant="outline" className="text-xs">
                           {symptom}
                         </Badge>

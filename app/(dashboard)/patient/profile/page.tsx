@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth-context';
+import { safeParseArray } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,7 +43,7 @@ export default function PatientProfilePage() {
     gender: user?.gender || '',
     address: user?.address || '',
     bloodType: user?.bloodType || '',
-    allergies: user?.allergies?.join(', ') || '',
+    allergies: safeParseArray(user?.allergies).join(', ') || '',
     emergencyContact: user?.emergencyContact || '',
     insuranceProvider: user?.insuranceProvider || '',
     insuranceNumber: user?.insuranceNumber || '',
